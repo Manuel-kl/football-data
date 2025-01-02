@@ -1,8 +1,8 @@
 <template>
   <TheNavbar />
-  <StandingsComponent />
+  <FixturesComponent />
 </template>
 <script setup lang="ts">
-import StandingsComponent from "@/components/StandingsComponent.vue";
+import FixturesComponent from "@/components/FixturesComponent.vue";
 import TheNavbar from "@/components/TheNavbar.vue";
 </script>

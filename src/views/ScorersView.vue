@@ -1,8 +1,8 @@
 <template>
   <TheNavbar />
-  <StandingsComponent />
+  <ScorersComponent />
 </template>
 <script setup lang="ts">
-import StandingsComponent from "@/components/StandingsComponent.vue";
+import ScorersComponent from "@/components/ScorersComponent.vue";
 import TheNavbar from "@/components/TheNavbar.vue";
 </script>
