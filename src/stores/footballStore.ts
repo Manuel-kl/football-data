@@ -10,7 +10,7 @@ export const useFootballStore = defineStore("football", () => {
 
   const getStandings = async () => {
     try {
-      const response = await apiClient.get("/competitions/2021/standings");
+      const response = await apiClient.get("/competitions/PL/standings");
       console.log(response.data);
     } catch (error) {
       console.error(error);
