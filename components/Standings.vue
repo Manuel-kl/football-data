@@ -1,15 +1,15 @@
 <template>
-  <div>
+  <div class="p-5 bg-light-gray">
     <div v-if="loading">
       <Loading />
     </div>
 
-    <div v-else class="flex justify-center items-center p-5 bg-light-gray">
+    <div v-else class="flex justify-center items-center">
       <table class="bg-deep-navy text-white w-full sm:w-[50%] p-2 sm:p-5">
         <thead class="">
           <tr>
             <th class="text-sm w-5 p-2">#</th>
-            <th class="text-sm w-[150px] p-2">T</th>
+            <th class="text-sm w-[150px] p-2">Team</th>
             <th class="text-sm w-10 p-2">P</th>
             <th class="text-sm w-10 p-2">W</th>
             <th class="text-sm w-10 p-2">D</th>
