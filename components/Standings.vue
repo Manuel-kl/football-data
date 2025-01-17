@@ -1,11 +1,11 @@
 <template>
-  <div class="p-5 bg-light-gray">
+  <div class="px-5 bg-light-gray">
     <div v-if="loading">
       <Loading />
     </div>
 
-    <div v-else class="flex justify-center items-center">
-      <table class="bg-deep-navy text-white w-full sm:w-[50%] p-2 sm:p-5">
+    <div v-else class="flex overflow-auto w-full">
+      <table class="bg-deep-navy text-white w-full sm:w-[60%] p-2 sm:p-5 mx-auto">
         <thead class="">
           <tr>
             <th class="text-sm w-5 p-2">#</th>
@@ -24,7 +24,8 @@
           <tr v-for="row in tableData" :key="row.position" class="">
             <td class="text-sm w-5 border-x border-b border-dark-gray text-center p-1 py-2">{{ row.position }}</td>
             <td class="text-sm w-full flex flex-row items-center gap-2 border-x border-b border-dark-gray p-2">
-              <span><img class="w-5 h-5" :src="row.crest" alt=""></span>{{ row.teamName }}</td>
+              <span><img class="w-5 h-5" :src="row.crest" alt=""></span>{{ row.teamName }}
+            </td>
             <td class="text-sm w-10 border-x border-b border-dark-gray text-center p-1 py-2">{{ row.playedGames }}</td>
             <td class="text-sm w-10 border-x border-b border-dark-gray text-center p-1 py-2">{{ row.won }}</td>
             <td class="text-sm w-10 border-x border-b border-dark-gray text-center p-1 py-2">{{ row.draw }}</td>

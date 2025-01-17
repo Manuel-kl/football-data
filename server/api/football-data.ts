@@ -10,12 +10,12 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    const apiUrl = `https://api.football-data.org/v4/competitions/${league}/standings`;
+    const apiUrl = 'https://api.football-data.org/v4';
     const headers = {
       "X-Auth-Token": process.env.API_KEY,
     };
 
-    const response = await $fetch(apiUrl, { headers });
+    const response = await $fetch(`${apiUrl}/competitions/${league}/standings`, { headers });
 
     return response;
   } catch (error) {
