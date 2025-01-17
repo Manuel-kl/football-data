@@ -1,6 +1,8 @@
 <template>
-    <Fixtures />
+    <Scorers />
 </template>
-<script lang="ts" setup>
-import Fixtures from '~/components/Fixtures.vue'
+<script setup>
+useHead({
+    title: 'Scorers',
+})
 </script>

@@ -15,6 +15,7 @@
     "axios": "^1.7.9",
     "nuxt": "^3.15.0",
     "pinia": "^2.3.0",
+    "v-calendar": "^3.1.2",
     "vue": "latest",
     "vue-router": "latest"
   }

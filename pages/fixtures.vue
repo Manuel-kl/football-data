@@ -1,5 +1,8 @@
 <template>
     <Fixtures />
 </template>
-<script lang="ts" setup>
+<script setup>
+useHead({
+    title: 'Fixtures',
+})
 </script>
