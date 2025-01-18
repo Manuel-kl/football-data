@@ -19,7 +19,6 @@ export default {
         yellow: "#ffde59",
         teal: "#57d9d9",
         "bright-teal": "#00ffff",
-        success: "rgb(146, 236, 146)",
         "main-bg-color": "#181818",
         "deep-navy": "#111",
       },

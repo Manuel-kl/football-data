@@ -12,13 +12,19 @@ export default defineEventHandler(async (event) => {
 
     const apiUrl = 'https://api.football-data.org/v4';
     const headers = {
-      "X-Auth-Token": process.env.API_KEY,
+      "X-Auth-Token": process.env.API_KEY || '',
     };
 
+    if (!process.env.API_KEY) {
+      return createError({
+        statusCode: 500,
+        statusMessage: "API_KEY is not defined",
+      });
+    }
     const response = await $fetch(`${apiUrl}/competitions/${league}/standings`, { headers });
 
     return response;
-  } catch (error) {
+  } catch (error: any) {
     return createError({
       statusCode: error.response?.status || 500,
       statusMessage: "Failed to football data",

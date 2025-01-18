@@ -1,8 +1,8 @@
 <template>
-    <Fixtures />
+    <Matches />
 </template>
 <script setup>
 useHead({
-    title: 'Fixtures',
+    title: 'Matches',
 })
 </script>

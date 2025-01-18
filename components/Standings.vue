@@ -4,8 +4,8 @@
       <Loading />
     </div>
 
-    <div v-else class="flex overflow-auto w-full">
-      <table class="bg-deep-navy text-white w-full sm:w-[60%] p-2 sm:p-5 mx-auto">
+    <div v-else class="flex overflow-auto w-full shadow-lg shadow-dark-gray rounded-md">
+      <table class="bg-deep-navy text-white w-full sm:w-[60%] p-2 sm:p-5 mx-auto rounded-md">
         <thead class="">
           <tr>
             <th class="text-sm w-5 p-2">#</th>
@@ -43,7 +43,6 @@
 </template>
 
 <script setup lang="ts">
-
 const footballStore = useFootballStore();
 const data = ref<any>(null);
 const loading = ref<boolean>(false);
@@ -72,7 +71,7 @@ onMounted(() => {
 const fetchStandings = async () => {
   loading.value = true;
   try {
-    data.value = await $fetch('/api/football-data', {
+    data.value = await $fetch('/api/standings', {
       params: { league: footballStore.selectedLeague },
     });
   } catch (err) {

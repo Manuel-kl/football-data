@@ -3,6 +3,7 @@ import { ref } from 'vue';
 
 export const useFootballStore = defineStore('league', () => {
   const selectedLeague = ref<string>('PL');
+  const selectedDate = ref<Date>(new Date());
 
   function setLeague(league: string) {
     selectedLeague.value = league;
@@ -11,5 +12,6 @@ export const useFootballStore = defineStore('league', () => {
   return {
     selectedLeague,
     setLeague,
+    selectedDate,
   };
 });
