@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
     } catch (error: any) {
         return createError({
             statusCode: error.response?.status || 500,
-            statusMessage: "Failed to football data",
+            statusMessage: "Failed to fetch football data",
         });
     }
 });

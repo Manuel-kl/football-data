@@ -1,11 +1,11 @@
 <template>
-  <div class="px-5 bg-light-gray">
+  <div class="px-5 bg-light-gray flex justify-center items-center">
     <div v-if="loading">
       <Loading />
     </div>
 
-    <div v-else class="flex overflow-auto w-full shadow-lg shadow-dark-gray rounded-md">
-      <table class="bg-deep-navy text-white w-full sm:w-[60%] p-2 sm:p-5 mx-auto rounded-md">
+    <div v-else class="flex overflow-auto shadow-lg shadow-dark-gray rounded-md w-full sm:w-[60%] ">
+      <table class="bg-deep-navy w-full text-white p-2 sm:p-5 mx-auto rounded-md">
         <thead class="">
           <tr>
             <th class="text-sm w-5 p-2">#</th>

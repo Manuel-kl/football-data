@@ -1,9 +1,9 @@
 <template>
-    <div class="px-6 py-2 bg-main-bg-color text-white flex flex-col gap-2  items-center">
+    <div class="px-6 py-2 bg-light-gray text-white flex flex-col gap-2  items-center">
         <div v-if="loading">
             <Loading />
         </div>
-        <div v-if="data && data.length > 0" v-for="match in data" :key="match.id"
+        <div v-if="data && data.length > 0 && !loading" v-for="match in data" :key="match.id"
             class="p-2 sm:p-4 bg-dark-gray rounded-lg shadow-lg w-[90%] sm:w-[70%]"
             :class="getMatchClass(match.status)">
             <div class="flex flex-col sm:grid grid-cols-6 sm:items-center">
@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <div v-if="!data || data.length == 0">
+        <div v-if="(!data || data.length == 0) && !loading">
             <NoGames />
         </div>
     </div>
@@ -89,23 +89,22 @@ watchEffect(() => {
 });
 
 const getMatchClass = (status) => {
-    return status === 'IN_PLAY' ? 'shadow shadow-md shadow-main-green blinking-shadow' : '';
+    return status === 'IN_PLAY' ? 'border border-main-green blinking-border' : '';
 };
-
 </script>
 
 <style>
-.blinking-shadow {
-    animation: blink-shadow 2s infinite;
+.blinking-border {
+    animation: blink-border 2s infinite;
 }
 
-@keyframes blink-shadow {
+@keyframes blink-border {
     0% {
         box-shadow: 0 0 1px rgba(126, 217, 87, 0.5);
     }
 
     50% {
-        box-shadow: 0 0 5px rgba(126, 217, 87, 1);
+        box-shadow: 0 0 8px rgba(126, 217, 87, 1);
     }
 
     100% {

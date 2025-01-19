@@ -1,31 +1,31 @@
 <template>
-    <div class="px-6 pt-2 pb-6 bg-main-bg-color text-white flex flex-col gap-2 justify-center items-center">
+    <div class="px-6 pt-2 pb-6 bg-light-gray text-white flex flex-col gap-2 justify-center items-center">
         <div v-if="loading">
             <Loading />
         </div>
-        <div
-            class="p-2 sm:p-4 bg-deep-navy border border-dark-gray rounded-lg shadow-dark-gray shadow-lg w-full sm:w-[70%] overflow-auto">
+        <div v-if="!loading"
+            class="p-2 sm:p-4 bg-deep-navy border border-dark-gray rounded-lg shadow-dark-gray shadow-lg w-full sm:w-[60%] overflow-auto">
             <table class="bg-deep-navy text-white w-full">
                 <thead class="">
                     <tr class="bg-dark-gray">
-                        <th class="text-sm sm:text-lg text-left p-2 rounded-tl-md">Player</th>
-                        <th class="text-sm sm:text-lg text-center p-2">Games</th>
-                        <th class="text-sm sm:text-lg text-center p-2">Goals</th>
-                        <th class="text-sm sm:text-lg text-center p-2">Assists</th>
-                        <th class="text-sm sm:text-lg text-center p-2 rounded-tr-md">Penalties</th>
+                        <th class="text-sm text-left p-2 rounded-tl-md">Player</th>
+                        <th class="text-sm text-center p-2">Games</th>
+                        <th class="text-sm text-center p-2">Goals</th>
+                        <th class="text-sm text-center p-2">Assists</th>
+                        <th class="text-sm text-center p-2 rounded-tr-md">Penalties</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-if="scorers" v-for="scorer in paginatedScorers" :key="scorer.player.id"
                         class="border-b border-gray-600">
-                        <td class="text-sm sm:text-lg p-2 sm:p-3 flex items-center">
+                        <td class="text-sm p-2 sm:p-3 flex items-center cursor-pointer hover:underline hover:text-main-green" @click="viewPlayer(scorer.player.id)">
                             <img :src="scorer.team.crest" alt="Team Crest" class="w-5 h-5 mr-2" />
                             {{ scorer.player.lastName }}
                         </td>
-                        <td class="text-sm sm:text-lg text-center p-2 sm:p-3">{{ scorer.playedMatches }}</td>
-                        <td class="text-sm sm:text-lg text-center p-2 sm:p-3">{{ scorer.goals }}</td>
-                        <td class="text-sm sm:text-lg text-center p-2 sm:p-3">{{ scorer.assists ?? 0 }}</td>
-                        <td class="text-sm sm:text-lg text-center p-2 sm:p-3">{{ scorer.penalties ?? 0 }}</td>
+                        <td class="text-sm text-center p-2 sm:p-3">{{ scorer.playedMatches }}</td>
+                        <td class="text-sm text-center p-2 sm:p-3">{{ scorer.goals }}</td>
+                        <td class="text-sm text-center p-2 sm:p-3">{{ scorer.assists ?? 0 }}</td>
+                        <td class="text-sm text-center p-2 sm:p-3">{{ scorer.penalties ?? 0 }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -38,6 +38,10 @@
 </template>
 
 <script lang="ts" setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 const footballStore = useFootballStore();
 const toast = useToast();
 
@@ -72,5 +76,10 @@ const fetchScorers = async () => {
 watchEffect(() => {
     fetchScorers();
 });
+
+const viewPlayer = (player: string) => {
+    footballStore.selectedPlayer = player;
+    router.push('player-stats');
+};
 
 </script>

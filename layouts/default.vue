@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-main-bg-color min-h-screen">
+    <div class="bg-light-gray min-h-screen">
         <Navbar />
         <LeagueOverviewComponent />
         <slot />
