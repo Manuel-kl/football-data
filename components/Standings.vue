@@ -69,6 +69,8 @@ onMounted(() => {
 });
 
 const fetchStandings = async () => {
+  if(!footballStore.selectedLeague) return;
+
   loading.value = true;
   try {
     data.value = await $fetch('/api/standings', {

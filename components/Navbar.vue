@@ -120,7 +120,15 @@ const selected = ref<Selected>(leagues[0])
 const footballStore = useFootballStore();
 
 const updateLeague = () => {
-  footballStore.selectedLeague = selected.value.code;
+  footballStore.setLeague(selected.value.code);
 }
 
+onMounted(() => {
+  const selectedLeague = localStorage.getItem('league');
+  if (selectedLeague) {
+    selected.value = leagues.find(league => league.code === selectedLeague) as Selected;
+  }
+
+  footballStore.setLeague(selected.value.code);
+})
 </script>

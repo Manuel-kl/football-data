@@ -8,6 +8,17 @@ export const useFootballStore = defineStore('league', () => {
 
   function setLeague(league: string) {
     selectedLeague.value = league;
+    localStorage.setItem('league', league);
+  }
+
+  function setDate(date: Date) {
+    selectedDate.value = date;
+    localStorage.setItem('date', date.toISOString());
+  }
+
+  function setPlayer(player: string) {
+    selectedPlayer.value = player;
+    localStorage.setItem('player', player);
   }
 
   return {
@@ -15,5 +26,7 @@ export const useFootballStore = defineStore('league', () => {
     setLeague,
     selectedDate,
     selectedPlayer,
+    setPlayer,
+    setDate,
   };
 });

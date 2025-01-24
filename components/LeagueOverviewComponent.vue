@@ -35,6 +35,15 @@ const footballStore = useFootballStore();
 
 const updateDate = (newDate: Date) => {
     date.value = newDate;
-    footballStore.selectedDate = newDate;
+    footballStore.setDate(newDate);
 }
+
+onMounted(() => {
+    const selectedDate = localStorage.getItem('date');
+    if (selectedDate) {
+        date.value = new Date(selectedDate);
+    }
+
+    footballStore.setDate(date.value);
+})
 </script>

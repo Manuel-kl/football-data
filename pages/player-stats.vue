@@ -1,5 +1,6 @@
 <template>
     <PlayerStats />
+    <UNotifications />
 </template>
 <script setup>
 useHead({

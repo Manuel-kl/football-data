@@ -61,6 +61,7 @@ onMounted(() => {
 });
 
 const fetchScorers = async () => {
+    if (!footballStore.selectedLeague) return;
     loading.value = true;
     try {
         scorers.value = await $fetch('/api/scorers', {
@@ -78,7 +79,7 @@ watchEffect(() => {
 });
 
 const viewPlayer = (player: string) => {
-    footballStore.selectedPlayer = player;
+    footballStore.setPlayer(player);
     router.push('player-stats');
 };
 
