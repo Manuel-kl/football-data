@@ -51,7 +51,6 @@ onMounted(() => {
         const now = Date.now();
         const timeSinceStorage = now - timestampNumber;
 
-
         if (timeSinceStorage > 300000) {
             localStorage.removeItem('date');
             localStorage.removeItem('dateTimestamp');

@@ -112,6 +112,8 @@ const viewPlayer = (player: string) => {
 };
 
 const showScorers = (teamId: string | null) => {
+    page.value = 1;
+
     if (teamId) {
         scorers.value = {
             ...allScorers.value,
