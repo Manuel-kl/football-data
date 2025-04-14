@@ -2,90 +2,150 @@
     <div v-if="loading">
         <Loading />
     </div>
-    <div v-if="!loading" class="bg-light-gray p-4 sm:p-6 rounded-lg shadow-lg">
-        <div class="text-xs text-faded-gray mb-4 text-right">
-            Last Updated: {{ new Date(playerData.lastUpdated).toLocaleDateString('en-GB', {
-                day: 'numeric', month:
-                    'long', year: 'numeric'
-            }) }}
-        </div>
-        <div class="flex flex-col gap-4 sm:gap-6">
-            <div class="bg-deep-navy p-4 sm:p-6 rounded-lg mb-4">
-                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 mb-5">
-                    <img :src="`https://api.dicebear.com/7.x/initials/svg?seed=${playerData.name}`" alt="Player Photo"
-                        class="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover border-2 sm:border-3 border-main-green shadow-lg">
-                    <div class="space-y-2 sm:space-y-3 text-center sm:text-left">
+    <div v-else-if="playerData" class="min-h-screen bg-gray-900 text-white p-2 sm:p-4">
+        <div class="max-w-4xl mx-auto bg-gray-800 rounded-lg overflow-hidden shadow-xl">
+
+            <div class="flex flex-wrap justify-end items-center p-2 text-gray-400 text-sm">
+                <div>Last Updated: {{ formatDateTime(playerData.lastUpdated) }}</div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center p-6">
+                <div
+                    class="w-24 h-24 rounded-full bg-red-500 flex items-center justify-center text-white text-4xl font-bold border-4 border-main-green">
+                    {{ getInitials(playerData.name) }}
+                </div>
+
+                <div class="mt-4 sm:mt-0 sm:ml-6 flex-grow text-center sm:text-left">
+                    <h1 class="text-3xl font-bold">{{ playerData.name }}</h1>
+                    <div class="text-main-green flex items-center justify-center sm:justify-start">
+                        {{ playerData.position }}, {{ playerData.section }}
+                        <span class="ml-4 bg-yellow text-black font-bold px-2 py-1 rounded flex items-center">
+                            <Shirt class="h-4 w-4 mr-1" />
+                            #{{ playerData.shirtNumber }}
+                        </span>
+                    </div>
+
+                    <div class="mt-4 flex flex-col sm:flex-row items-center text-gray-300">
+                        <div class="flex items-center">
+                            <div class="mr-1">Current Team</div>
+                            <Flag class="h-4 w-4 mr-1" />
+                            <span class="flex items-center">
+                                <span v-if="playerData.currentTeam.area?.code"
+                                    class="mr-1 text-xs border border-gray-600 px-1">
+                                    {{ playerData.currentTeam.area.code }}
+                                </span>
+                                {{ playerData.currentTeam.name }}
+                            </span>
+                        </div>
+
+                        <div class="hidden sm:block mx-4 text-gray-500">|</div>
+
+                        <div class="flex items-center mt-2 sm:mt-0">
+                            <div class="mr-1">Nationality</div>
+                            <Flag class="h-4 w-4 mr-1" />
+                            <span>{{ playerData.nationality }}</span>
+                        </div>
+
+                        <div class="hidden sm:block mx-4 text-gray-500">|</div>
+
+                        <div class="flex items-center mt-2 sm:mt-0">
+                            <div class="mr-1">Date of Birth</div>
+                            <Calendar class="h-4 w-4 mr-1" />
+                            <span>{{ formatDate(playerData.dateOfBirth) }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <h2 class="text-main-green text-xl mb-4">Current Team ({{ playerData.currentTeam.name }}) Details
+                    </h2>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="font-medium">Full Name:</span>
+                            <span>{{ playerData.firstName }} {{ playerData.lastName }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="font-medium">Short Name:</span>
+                            <span>{{ playerData.currentTeam.shortName }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="font-medium">TLA:</span>
+                            <span>{{ playerData.currentTeam.tla }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="font-medium">Founded:</span>
+                            <span>{{ playerData.currentTeam.founded }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="font-medium">Club Colors:</span>
+                            <span>{{ playerData.currentTeam.clubColors }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="font-medium">Address:</span>
+                            <span class="text-right max-w-[200px]">{{ playerData.currentTeam.address }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center justify-center bg-gray-700 rounded-lg p-4">
+                    <h2 class="text-main-green text-xl mb-4">Area Information</h2>
+                    <div class="space-y-2 w-full mb-4">
+                        <div class="flex justify-between">
+                            <span class="font-medium">Area Name:</span>
+                            <span>{{ playerData.currentTeam.area.name }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="font-medium">Area Code:</span>
+                            <span>{{ playerData.currentTeam.area.code }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="font-medium">Contract Start:</span>
+                            <span>{{ playerData.currentTeam.contract.start || 'N/A' }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="font-medium">Contract Until:</span>
+                            <span>{{ playerData.currentTeam.contract.until || 'N/A' }}</span>
+                        </div>
+                    </div>
+                    <img v-if="playerData.currentTeam.crest" :src="playerData.currentTeam.crest" alt="Team Crest"
+                        class="w-16 h-16 mb-4" @error="(e) => { if (e.target) e.target.style.display = 'none'; }" />
+                    <a :href="playerData.currentTeam.website" target="_blank"
+                        class="flex items-center text-main-green hover:text-green-400 transition-colors">
+                        <LinkIcon class="h-4 w-4 mr-2" />
+                        {{ playerData.currentTeam.name }} official website
+                    </a>
+                </div>
+            </div>
+
+            <div class="p-6 border-t border-gray-700" v-if="playerData.currentTeam.runningCompetitions?.length">
+                <h2 class="text-xl text-main-green mb-4">Running Competitions</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div v-for="competition in playerData.currentTeam.runningCompetitions" :key="competition.id"
+                        class="bg-gray-700 p-3 rounded-lg flex items-center">
+                        <img v-if="competition.emblem" :src="competition.emblem" :alt="competition.name"
+                            class="w-8 h-8 mr-3">
                         <div>
-                            <h1 class="text-2xl sm:text-3xl font-bold text-white mb-1">{{ playerData.name }}</h1>
-                            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 sm:gap-3">
-                                <span class="px-3 py-1 bg-light-gray rounded-full text-main-green text-sm">
-                                    {{ playerData.position }}, {{ playerData.section }}
-                                </span>
-                                <span class="text-yellow font-bold">#{{ playerData.shirtNumber }}</span>
-                            </div>
-                        </div>
-
-                        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-4 text-faded-gray">
-                            <div class="flex flex-col items-center sm:items-start">
-                                <span class="text-xs text-main-green">Current Team</span>
-                                <div class="flex flex-row items-center gap-2">
-                                    <img :src="playerData.currentTeam.crest" alt="Team crest" class="w-5 h-5">
-                                    <span>{{ playerData.currentTeam.name }}</span>
-                                </div>
-                            </div>
-                            <div class="hidden sm:block">|</div>
-                            <div class="flex flex-col items-center sm:items-start">
-                                <span class="text-xs text-main-green">Nationality</span>
-                                <span>{{ playerData.nationality }}</span>
-                            </div>
-                            <div class="hidden sm:block">|</div>
-                            <div class="flex flex-col items-center sm:items-start">
-                                <span class="text-xs text-main-green">Date of Birth</span>
-                                <span>
-                                    {{ new Date(playerData.dateOfBirth).toLocaleDateString('en-GB', {
-                                        day:
-                                    'numeric', month: 'long', year: 'numeric'
-                                    }) }}
-                                </span>
-                            </div>
+                            <div class="font-medium">{{ competition.name }}</div>
+                            <div class="text-gray-400 text-sm">Code: {{ competition.code }}</div>
+                            <div class="text-gray-400 text-sm">Type: {{ competition.type }}</div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="bg-light-gray p-4 rounded-lg">
-                        <h3 class="text-main-green font-semibold mb-2">Current Team ({{ playerData.currentTeam.name }})
-                            Details</h3>
-                        <div class="space-y-2 text-sm">
-                            <p class="text-white">Club: <span class="text-faded-gray">{{ playerData.currentTeam.name
-                                    }}</span></p>
-                            <p class="text-white">Founded: <span class="text-faded-gray">{{
-                                    playerData.currentTeam.founded }}</span></p>
-                            <p class="text-white">Venue: <span class="text-faded-gray">{{ playerData.currentTeam.venue
-                                || 'N/A' }}</span></p>
-                            <p class="text-white">Club Colors: <span class="text-faded-gray">{{
-                                playerData.currentTeam.clubColors }}</span></p>
-                        </div>
-                    </div>
-                    <div class="bg-light-gray p-4 rounded-lg flex flex-col gap-2 items-center justify-center">
-                        <img :src="playerData.currentTeam.crest" alt="Team crest"
-                            class="w-24 border-2 shadow-sm shadow-faded-gray">
-                        <a :href="playerData.currentTeam.website" target="_blank"
-                            class="inline-flex items-center gap-2 text-grass-green hover:text-main-green transition-colors">
-                            <span>{{ playerData.currentTeam.shortName }} official website</span>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
+            <div class="bg-gray-900 p-4 text-center text-gray-500">
+                <p>Player Profile: {{ playerData.name }}</p>
+                <p class="text-sm mt-1">Last Updated: {{ formatDateTime(playerData.lastUpdated) }}</p>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import { Calendar, Flag, Shirt, Link as LinkIcon } from 'lucide-vue-next';
+
 const footballStore = useFootballStore();
 const router = useRouter();
 const playerData = ref<any>(null);
@@ -97,6 +157,7 @@ onMounted(() => {
 
     if (selectedPlayer) {
         footballStore.setPlayer(selectedPlayer);
+        fetchPlayerData();
     } else {
         router.push('/');
     }
@@ -120,4 +181,24 @@ const fetchPlayerData = async () => {
 watchEffect(() => {
     fetchPlayerData();
 });
+
+const formatDate = (dateString: string): string => {
+    return new Date(dateString).toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    });
+};
+
+const getInitials = (name: string): string => {
+    return name.split(' ').map(part => part.charAt(0)).join('');
+};
+
+const formatDateTime = (dateTimeString: string): string => {
+    return new Date(dateTimeString).toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    });
+};
 </script>

@@ -1,5 +1,11 @@
 <template>
     <div class="px-6 pt-2 pb-6 bg-light-gray text-white flex flex-col gap-2 justify-center items-center">
+        <div class="flex flex-row  w-full sm:w-[60%] overflow-auto">
+            <button class="bg-deep-navy text-white p-2" @click="showScorers(null)">All</button>
+            <div v-for="team in teams.teams" :key="team.id" class="p-2">
+                <img :src="team.crest" class="w-8 h-8 cursor-pointer max-w-none" @click="showScorers(team.id)">
+            </div>
+        </div>
         <div v-if="loading">
             <Loading />
         </div>
@@ -18,7 +24,8 @@
                 <tbody>
                     <tr v-if="scorers" v-for="scorer in paginatedScorers" :key="scorer.player.id"
                         class="border-b border-gray-600">
-                        <td class="text-sm p-2 sm:p-3 flex items-center cursor-pointer hover:underline hover:text-main-green" @click="viewPlayer(scorer.player.id)">
+                        <td class="text-sm p-2 sm:p-3 flex items-center cursor-pointer hover:underline hover:text-main-green"
+                            @click="viewPlayer(scorer.player.id)">
                             <img :src="scorer.team.crest" alt="Team Crest" class="w-5 h-5 mr-2" />
                             {{ scorer.player.lastName }}
                         </td>
@@ -46,8 +53,10 @@ const footballStore = useFootballStore();
 const toast = useToast();
 
 const scorers = ref<any>(null);
+const allScorers = ref<any>(null);
 const loading = ref<boolean>(false);
 const page = ref(1);
+const teams = ref<any>([]);
 
 const paginatedScorers = computed(() => {
     if (!scorers.value) return [];
@@ -58,21 +67,40 @@ const paginatedScorers = computed(() => {
 
 onMounted(() => {
     fetchScorers();
+    fetchTeams();
 });
 
 const fetchScorers = async () => {
     if (!footballStore.selectedLeague) return;
     loading.value = true;
     try {
-        scorers.value = await $fetch('/api/scorers', {
+        const fetchedScorers: Array<[]> = await $fetch('/api/scorers', {
             params: { league: footballStore.selectedLeague, limit: 300 },
         })
+        allScorers.value = fetchedScorers;
+        scorers.value = {
+            ...fetchedScorers,
+            scorers: [...fetchedScorers.scorers]
+        };
     } catch (err) {
         toast.add({ title: 'Error', description: "Failed to fetch data", color: 'red' });
     } finally {
         loading.value = false;
     }
 };
+
+const fetchTeams = async () => {
+    const league = localStorage.getItem('league');
+    if (!league) return;
+
+    try {
+        teams.value = await $fetch('/api/teams', {
+            params: { league },
+        });
+    } catch (error) {
+        console.error("Failed to fetch teams", error);
+    }
+}
 
 watchEffect(() => {
     fetchScorers();
@@ -83,4 +111,17 @@ const viewPlayer = (player: string) => {
     router.push('player-stats');
 };
 
+const showScorers = (teamId: string | null) => {
+    if (teamId) {
+        scorers.value = {
+            ...allScorers.value,
+            scorers: allScorers.value.scorers.filter((scorer: any) => scorer.team.id === teamId)
+        };
+    } else {
+        scorers.value = {
+            ...allScorers.value,
+            scorers: [...allScorers.value.scorers]
+        };
+    }
+}
 </script>

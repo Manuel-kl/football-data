@@ -36,14 +36,30 @@ const footballStore = useFootballStore();
 const updateDate = (newDate: Date) => {
     date.value = newDate;
     footballStore.setDate(newDate);
+    localStorage.setItem('date', newDate.toISOString());
+    localStorage.setItem('dateTimestamp', Date.now().toString());
 }
 
 onMounted(() => {
     const selectedDate = localStorage.getItem('date');
-    if (selectedDate) {
-        date.value = new Date(selectedDate);
-    }
+    const storedTimestamp = localStorage.getItem('dateTimestamp');
 
+    // Persist the date in local storage to allow the user to view the same data when they refresh the page within 5 minutes
+    if (selectedDate && storedTimestamp) {
+        const storedDate = new Date(selectedDate);
+        const timestampNumber = parseInt(storedTimestamp);
+        const now = Date.now();
+        const timeSinceStorage = now - timestampNumber;
+
+
+        if (timeSinceStorage > 300000) {
+            localStorage.removeItem('date');
+            localStorage.removeItem('dateTimestamp');
+            date.value = new Date();
+        } else {
+            date.value = storedDate;
+        }
+    }
     footballStore.setDate(date.value);
 })
 </script>
